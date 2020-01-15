@@ -21,7 +21,7 @@ for root,dirs,files in os.walk(dst):
         if ext in ['.wv1','.wv2']:
             full_name=os.path.join(root,file)
             converted_name=os.path.join(root,base_name+'.wav')
-            cmd_copy="ffmpeg -i {} {}".format(full_name,converted_name)
+            cmd_copy="ffmpeg -i {} {} -y".format(full_name,converted_name)
             cmd_remove='rm {}'.format(full_name)
             cmds.append([cmd_copy,cmd_remove])
 
