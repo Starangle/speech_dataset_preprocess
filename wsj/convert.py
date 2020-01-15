@@ -17,19 +17,19 @@ else:
 
 cmds=[]
 def run(cmd_arr):
-    cmd_copy,cmd_remove=cmd_arr
-    os.system(cmd_copy)
-    os.system(cmd_remove)
+    for cmd in cmd_arr:
+        os.system(cmd)
 
 for root,dirs,files in os.walk(dst):
     for file in files:
         base_name,ext=os.path.splitext(file)
         if ext in ['.wv1','.wv2']:
             full_name=os.path.join(root,file)
-            converted_name=os.path.join(root,base_name+'.wav')
+            converted_name=full_name+'.wav'
             cmd_copy="ffmpeg -i {} {} -y".format(full_name,converted_name)
             cmd_remove='rm {}'.format(full_name)
-            cmds.append([cmd_copy,cmd_remove])
+            cmd_move='mv {} {}'.format(converted_name,full_name)
+            cmds.append([cmd_copy,cmd_remove,cmd_move])
 
 pool=ThreadPoolExecutor()
 pool.map(run,cmds)
