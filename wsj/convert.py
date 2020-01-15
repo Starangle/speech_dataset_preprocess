@@ -5,9 +5,15 @@ from concurrent.futures import ThreadPoolExecutor
 parser=argparse.ArgumentParser()
 parser.add_argument('src')
 parser.add_argument('--dst')
+parser.add_argument('-m','--merge_disk',action='store_true')
 args=parser.parse_args()
-dst=args.dst if args.dst else args.src+'-Converted'
-shutil.copytree(args.src,dst)
+dst=args.dst if args.dst else args.src+'-converted'
+
+if args.merge_disk==False:
+    shutil.copytree(args.src,dst)
+else:
+    os.mkdir(dst)
+    os.system("cp -r {}/*/wsj* {}".format(args.src,dst))
 
 cmds=[]
 def run(cmd_arr):
